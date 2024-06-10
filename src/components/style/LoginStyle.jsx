@@ -44,3 +44,8 @@ export const StLabel = styled.label`
 export const StInput = styled.input`
   width: 200px;
 `;
+
+export const StButtonBox = styled.div`
+  display: flex;
+  gap: 10px;
+`;
