@@ -6,13 +6,13 @@ const GlobalStyle = createGlobalStyle`
   body {
     max-width: 900px;
     min-width: 600px;
-    margin: 0 auto;
+    margin: 100px auto 30px;
     background-color: pink;
     display: grid;
   }
   a {
     text-decoration: none;
-    color: black;
+    color: inherit;
   }
   button {
     cursor: pointer;
@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
   input {
     height: 25px;
   }
-  section {
+  section, header, form {
     display: flex;
     background-color: aliceblue;
     border-radius: 10px;
@@ -44,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
     justify-content: space-between;
     width: 790px;
     border-radius: 8px;
-    background-color: #9cffcd;
+    background-color: #ffddf7;
     padding: 10px;
     line-height: 1.5;
     cursor: pointer;
