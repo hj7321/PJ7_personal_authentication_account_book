@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const StButton = styled.button`
-  width: ${(props) => (props.$login ? "80px" : "130px")};
+  width: 130px;
+  margin-top: ${(props) => (props.$margin ? 30 : 0)}px;
   padding: 10px;
   background-color: #fcd1d8;
   border: 2px solid #fcd1d8;
@@ -19,7 +20,6 @@ export const StSection = styled.section`
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  margin-top: 70px;
 `;
 
 export const StH3 = styled.h3`
@@ -31,12 +31,15 @@ export const StIdPw = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
 `;
 
-export const StLoginBox = styled.div`
+export const StLoginBox = styled.form`
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  margin: 30px;
+  align-items: center;
+  padding-bottom: 5px;
 `;
 
 export const StLabel = styled.label`
@@ -45,9 +48,4 @@ export const StLabel = styled.label`
 
 export const StInput = styled.input`
   width: 200px;
-`;
-
-export const StButtonBox = styled.div`
-  display: flex;
-  gap: 10px;
 `;
