@@ -8,23 +8,59 @@ import {
   StInput,
   StButton,
 } from "../style/LoginStyle";
+import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const { login } = useContext(AuthContext);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData(e.target);
+    const id = data.get("id");
+    const password = data.get("pw");
+
+    if (!id.trim() || !password.trim())
+      return alert("아이디와 비밀번호를 모두 입력해주세요.");
+
+    try {
+      const loginObj = { id, password };
+      const { data } = await axios.post(
+        "https://moneyfulpublicpolicy.co.kr/login",
+        loginObj
+      );
+      console.log(data);
+      if (data.success) {
+        alert(`${data.nickname}님, 환영합니다!`);
+        login(data.accessToken);
+        navigate("/");
+      } else alert("로그인 실패"); // 에러 나면 무조건 catch문으로 가니까 이거 필요 없나?
+
+      e.target.reset();
+    } catch (error) {
+      alert(`로그인 실패: ${error.message}`);
+    }
+  };
+
   return (
     <StSection>
       <StH3>로그인</StH3>
-      <StLoginBox>
+      <StLoginBox onSubmit={onSubmitHandler}>
         <StIdPw>
           <label>
-            아이디 <StInput type="text" />
+            아이디 <StInput type="text" name="id" />
           </label>
           <StLabel>
-            비밀번호 <StInput type="password" />
+            비밀번호 <StInput type="password" name="pw" />
           </StLabel>
         </StIdPw>
-        <StButton $login>로그인</StButton>
+        <StButton type="submit" $margin>
+          로그인
+        </StButton>
       </StLoginBox>
       <StButton
         onClick={() => {
