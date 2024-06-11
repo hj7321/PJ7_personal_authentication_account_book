@@ -7,11 +7,11 @@ import {
   StLabel,
   StInput,
   StButton,
-  StButtonBox,
 } from "../style/LoginStyle";
 import { useNavigate } from "react-router-dom";
 import { StMessage } from "../style/SignUpStyle";
 import useValidate from "../hooks/useValidate";
+import axios from "axios";
 
 const SignUp = () => {
   const [inputId, setInputId] = useState("");
@@ -28,15 +28,43 @@ const SignUp = () => {
   useValidate(inputPw, setPwMsg, "비밀번호는", 4, 15);
   useValidate(inputName, setNameMsg, "닉네임은", 1, 10);
 
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (!idMsg && !pwMsg && !nameMsg) {
+        const newUser = { id: inputId, password: inputPw, nickname: inputName };
+
+        const { data } = await axios.post(
+          "https://moneyfulpublicpolicy.co.kr/register",
+          newUser
+        );
+
+        console.log(data);
+        if (data.success) {
+          alert("회원가입을 축하드립니다.");
+          navigate("/login");
+        } else alert("회원가입 실패"); // 에러 나면 무조건 catch문으로 가니까 이거 필요 없나?
+
+        setInputId("");
+        setInputPw("");
+        setInputName("");
+      }
+    } catch (error) {
+      alert(`회원가입 실패: ${error.message}`);
+    }
+  };
+
   return (
     <StSection>
       <StH3>회원가입</StH3>
-      <StLoginBox>
+      <StLoginBox onSubmit={onSubmitHandler}>
         <StIdPw>
           <label>
             아이디{" "}
             <StInput
               type="text"
+              name="id"
               value={inputId}
               onChange={(e) => setInputId(e.target.value)}
             />
@@ -46,6 +74,7 @@ const SignUp = () => {
             비밀번호{" "}
             <StInput
               type="password"
+              name="pw"
               value={inputPw}
               onChange={(e) => setInputPw(e.target.value)}
             />
@@ -57,23 +86,24 @@ const SignUp = () => {
             닉네임{" "}
             <StInput
               type="text"
+              name="nickname"
               value={inputName}
               onChange={(e) => setInputName(e.target.value)}
             />
             <StMessage $show={nameMsg}>{nameMsg}</StMessage>
           </label>
         </StIdPw>
-      </StLoginBox>
-      <StButtonBox>
-        <StButton $login>회원가입</StButton>
-        <StButton
-          onClick={() => {
-            navigate("/login");
-          }}
-        >
-          로그인 하기
+        <StButton type="submit" $margin>
+          회원가입
         </StButton>
-      </StButtonBox>
+      </StLoginBox>
+      <StButton
+        onClick={() => {
+          navigate("/login");
+        }}
+      >
+        로그인 하기
+      </StButton>
     </StSection>
   );
 };
