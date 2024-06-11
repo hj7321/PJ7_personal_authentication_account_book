@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext } from "../context/AuthContext";
 
 const StHeader = styled.header`
   display: flex;
@@ -31,24 +33,25 @@ const StButton = styled.button`
 
 const HeaderNav = () => {
   const navigate = useNavigate();
+
+  const { logout } = useContext(AuthContext);
+
+  const logoutHandler = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <>
       <StHeader>
         <StDiv $moreGap>
-          {/* 추후에 Link 태그로 변경 */}
           <Link to="/">Home</Link>
-          <span>Profile</span>
+          <Link to="profile">Profile</Link>
         </StDiv>
         <StDiv>
           <span>프로필 사진</span>
           <span>닉네임</span>
-          <StButton
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            로그아웃
-          </StButton>
+          <StButton onClick={logoutHandler}>로그아웃</StButton>
         </StDiv>
       </StHeader>
       <Outlet />
