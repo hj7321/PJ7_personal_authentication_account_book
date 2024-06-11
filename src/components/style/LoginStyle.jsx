@@ -19,6 +19,7 @@ export const StSection = styled.section`
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
+  margin-top: 70px;
 `;
 
 export const StH3 = styled.h3`
