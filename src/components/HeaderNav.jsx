@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const StHeader = styled.header`
@@ -29,7 +29,8 @@ const StButton = styled.button`
   }
 `;
 
-const HeaderNav = ({ children }) => {
+const HeaderNav = () => {
+  const navigate = useNavigate();
   return (
     <>
       <StHeader>
@@ -41,10 +42,16 @@ const HeaderNav = ({ children }) => {
         <StDiv>
           <span>프로필 사진</span>
           <span>닉네임</span>
-          <StButton>로그아웃</StButton>
+          <StButton
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            로그아웃
+          </StButton>
         </StDiv>
       </StHeader>
-      {children}
+      <Outlet />
     </>
   );
 };
