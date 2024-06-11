@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   StSection,
   StH3,
@@ -11,6 +11,7 @@ import {
 } from "../style/LoginStyle";
 import { useNavigate } from "react-router-dom";
 import { StMessage } from "../style/SignUpStyle";
+import useValidate from "../hooks/useValidate";
 
 const SignUp = () => {
   const [inputId, setInputId] = useState("");
@@ -23,35 +24,29 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const validateId = () => {
-      if (inputId.length !== 0 && (inputId.length < 4 || inputId.length > 10))
-        setIdMsg("아이디는 4~10글자여야 합니다.");
-      else setIdMsg("");
-    };
-    validateId();
-  }, [inputId]);
+  useValidate({
+    inputValue: inputId,
+    setValueMsg: setIdMsg,
+    str: "아이디는",
+    min: 4,
+    max: 10,
+  });
 
-  useEffect(() => {
-    const validatePw = () => {
-      if (inputPw.length !== 0 && (inputPw.length < 4 || inputPw.length > 15))
-        setPwMsg("비밀번호는 4~15글자여야 합니다.");
-      else setPwMsg("");
-    };
-    validatePw();
-  }, [inputPw]);
+  useValidate({
+    inputValue: inputPw,
+    setValueMsg: setPwMsg,
+    str: "비밀번호는",
+    min: 4,
+    max: 15,
+  });
 
-  useEffect(() => {
-    const validateName = () => {
-      if (
-        inputName.length !== 0 &&
-        (inputName.length < 1 || inputName.length > 10)
-      )
-        setNameMsg("닉네임은 1~10글자여야 합니다.");
-      else setNameMsg("");
-    };
-    validateName();
-  }, [inputName]);
+  useValidate({
+    inputValue: inputName,
+    setValueMsg: setNameMsg,
+    str: "닉네임은",
+    min: 1,
+    max: 10,
+  });
 
   return (
     <StSection>
