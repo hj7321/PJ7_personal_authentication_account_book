@@ -29,6 +29,7 @@ export const SummaryContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  width: 800px;
   justify-content: center;
   align-items: center;
   margin-bottom: ${(props) => (props.$length ? 10 : 0)}px;
