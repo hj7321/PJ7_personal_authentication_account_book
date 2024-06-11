@@ -1,13 +1,7 @@
 import styled from "styled-components";
 
 export const StForm = styled.form`
-  display: flex;
-  background-color: aliceblue;
-  border-radius: 10px;
-  margin: 10px;
-  padding: 20px;
   gap: 10px;
-  justify-content: center;
 `;
 
 export const StDiv = styled.div`
@@ -19,4 +13,12 @@ export const StDiv = styled.div`
 export const StButton = styled.button`
   border-radius: 10px;
   width: 100px;
+  background-color: #fcd1d8;
+  border: 2px solid #fcd1d8;
+  border-radius: 5px;
+  font-size: 15px;
+  &:hover {
+    background-color: #fda0b0;
+    font-weight: bold;
+  }
 `;
