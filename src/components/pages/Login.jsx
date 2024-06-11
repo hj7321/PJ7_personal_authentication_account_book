@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   StSection,
   StH3,
@@ -9,6 +10,8 @@ import {
 } from "../style/LoginStyle";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
     <StSection>
       <StH3>로그인</StH3>
@@ -23,7 +26,13 @@ const Login = () => {
         </StIdPw>
         <StButton $login>로그인</StButton>
       </StLoginBox>
-      <StButton>회원가입 하기</StButton>
+      <StButton
+        onClick={() => {
+          navigate("/signup");
+        }}
+      >
+        회원가입 하기
+      </StButton>
     </StSection>
   );
 };
