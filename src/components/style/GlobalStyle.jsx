@@ -6,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     max-width: 900px;
     min-width: 600px;
-    margin: 100px auto 30px;
+    margin: 80px auto 30px;
     background-color: pink;
     display: grid;
   }
@@ -32,6 +32,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 20px;
     justify-content: center;
     width: 840px;
+  }
+  header {
+    margin-top: 0px;
   }
   ul {
     display: flex;
