@@ -17,7 +17,8 @@ export const StSection = styled.section`
   flex-direction: column;
   text-align: center;
   align-items: center;
-  padding: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 `;
 
 export const StH3 = styled.h3`
