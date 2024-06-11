@@ -24,29 +24,9 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  useValidate({
-    inputValue: inputId,
-    setValueMsg: setIdMsg,
-    str: "아이디는",
-    min: 4,
-    max: 10,
-  });
-
-  useValidate({
-    inputValue: inputPw,
-    setValueMsg: setPwMsg,
-    str: "비밀번호는",
-    min: 4,
-    max: 15,
-  });
-
-  useValidate({
-    inputValue: inputName,
-    setValueMsg: setNameMsg,
-    str: "닉네임은",
-    min: 1,
-    max: 10,
-  });
+  useValidate(inputId, setIdMsg, "아이디는", 4, 10);
+  useValidate(inputPw, setPwMsg, "비밀번호는", 4, 15);
+  useValidate(inputName, setNameMsg, "닉네임은", 1, 10);
 
   return (
     <StSection>

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const useValidate = ({ inputValue, setValueMsg, str, min, max }) => {
+const useValidate = (inputValue, setValueMsg, str, min, max) => {
   useEffect(() => {
     const validateValue = () => {
       if (
