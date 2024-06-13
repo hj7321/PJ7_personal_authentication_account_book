@@ -4,25 +4,37 @@ import { StDiv, StP } from "../style/CategoryStyle";
 import { useSelector } from "react-redux";
 import SortedOption from "./SortedOption";
 import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getExpense, getExpenses } from "../../api/Expense";
 
 const Category = () => {
-  const { expense } = useSelector((state) => state.expense);
   const { month } = useSelector((state) => state.month);
 
-  // console.log("expense: ", expense);
-  // console.log("month: ", month);
+  const {
+    isPending,
+    isFetching,
+    data: expenses,
+  } = useQuery({
+    queryKey: ["expenses"],
+    queryFn: getExpenses,
+    select: (expenses) => expenses,
+  });
+
+  console.log(expenses);
 
   const changeExpense = () => {
-    return expense.filter((obj) => obj.date.split("-")[1] == month);
+    return expenses?.filter((obj) => obj.month === month) || [];
   };
 
-  const [filteredExpense, setFilteredExpense] = useState(changeExpense);
+  const [filteredExpense, setFilteredExpense] = useState([]);
 
   useEffect(() => {
-    setFilteredExpense(changeExpense);
-  }, [expense, month]);
+    if (expenses) setFilteredExpense(changeExpense);
+  }, [expenses, month]);
 
-  // console.log("filteredExpense: ", filteredExpense);
+  if (isPending) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <StSection>
@@ -41,7 +53,7 @@ const Category = () => {
               <div>
                 <p>{obj.date}</p>
                 <StP>
-                  [{obj.item}] {obj.description}
+                  [{obj.item}] {obj.description} (by {obj.createdBy})
                 </StP>
               </div>
               <StDiv>{obj.amount.toLocaleString()}원</StDiv>
