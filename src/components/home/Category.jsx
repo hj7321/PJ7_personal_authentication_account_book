@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { StSection } from "../style/CalendarStyle";
 import { StDiv, StP } from "../style/CategoryStyle";
 import { useSelector } from "react-redux";
 import SortedOption from "./SortedOption";
-import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getExpense, getExpenses } from "../../api/Expense";
+import { useContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getExpenses } from "../../api/Expense";
+import { AuthContext } from "./../../context/AuthContext";
 
 const Category = () => {
   const { month } = useSelector((state) => state.month);
+
+  const navigate = useNavigate();
+
+  const { userInfo } = useContext(AuthContext);
 
   const {
     isPending,
@@ -20,10 +25,14 @@ const Category = () => {
     select: (expenses) => expenses,
   });
 
-  console.log(expenses);
-
   const changeExpense = () => {
     return expenses?.filter((obj) => obj.month === month) || [];
+  };
+
+  const checkUser = (createdBy, id) => {
+    if (createdBy !== userInfo.nickname)
+      return alert("본인이 작성한 목록만 수정 및 삭제가 가능합니다.");
+    navigate(`/detail/${id}`);
   };
 
   const [filteredExpense, setFilteredExpense] = useState([]);
@@ -48,7 +57,7 @@ const Category = () => {
           "지출이 없습니다."
         )}
         {filteredExpense.map((obj) => (
-          <Link key={obj.id} to={`/detail/${obj.id}`}>
+          <Link key={obj.id} onClick={() => checkUser(obj.createdBy, obj.id)}>
             <li>
               <div>
                 <p>{obj.date}</p>
