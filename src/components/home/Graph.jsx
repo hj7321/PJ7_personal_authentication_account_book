@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   BarSegment,
   ColorBox,
@@ -8,14 +9,22 @@ import {
   SummaryItem,
 } from "../style/GraphStyle";
 import { useSelector } from "react-redux";
+import { getExpenses } from "../../api/Expense";
 
 const Graph = () => {
-  const { expense } = useSelector((state) => state.expense);
   const { month } = useSelector((state) => state.month);
 
-  const filteredExpense = expense.filter(
-    (obj) => obj.date.split("-")[1] == month
-  );
+  const {
+    isPending,
+    isFetching,
+    data: expenses,
+  } = useQuery({
+    queryKey: ["expenses"],
+    queryFn: getExpenses,
+    select: (expenses) => expenses,
+  });
+
+  const filteredExpense = expenses?.filter((obj) => obj.month === month) || [];
 
   const totalAmount = filteredExpense.reduce((amount, obj) => {
     return amount + obj.amount;
