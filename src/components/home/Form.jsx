@@ -1,12 +1,22 @@
-import { v4 as uuidv4 } from "uuid";
 import { StButton, StForm } from "../style/FormStyle";
 import HomeInput from "./HomeInput";
 import validateInput from "../../shared/validateInput";
-import { useDispatch } from "react-redux";
-import { addExpense } from "../../redux/slices/expenseSlice";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addExpense } from "../../api/Expense";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Form = () => {
-  const dispatch = useDispatch();
+  const { userInfo } = useContext(AuthContext);
+
+  const queryClient = useQueryClient();
+
+  const addMutation = useMutation({
+    mutationFn: addExpense,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["expenses"]);
+    },
+  });
 
   const onAddHandler = (e) => {
     e.preventDefault();
@@ -16,17 +26,11 @@ const Form = () => {
     const item = data.get("item");
     const amount = +data.get("amount");
     const description = data.get("description");
+    const createdBy = userInfo.nickname;
+    const month = +date.split("-")[1];
 
     if (validateInput(date, item, amount, description)) {
-      const newExpense = {
-        id: uuidv4(),
-        date,
-        item,
-        amount,
-        description,
-      };
-
-      dispatch(addExpense(newExpense));
+      addMutation.mutate({ date, item, amount, description, createdBy, month });
 
       e.target.reset();
     }
