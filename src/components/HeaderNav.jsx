@@ -46,34 +46,7 @@ const StLink = styled(Link)`
 
 const HeaderNav = () => {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
-  const [image, setImage] = useState("");
-  const { isAuthenticated, logout } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    else {
-      const fetchUserInfo = async () => {
-        try {
-          const token = localStorage.getItem("accessToken");
-          const { data } = await axios.get(
-            "https://moneyfulpublicpolicy.co.kr/user",
-            {
-              headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setNickname(data.nickname);
-          setImage(data.avatar ?? "../images/profile.jpg");
-        } catch (error) {
-          alert(`사용자 정보 불러오기 실패: ${error.message}`);
-        }
-      };
-      fetchUserInfo();
-    }
-  }, [isAuthenticated]);
+  const { logout, userInfo } = useContext(AuthContext);
 
   const logoutHandler = () => {
     logout();
@@ -88,8 +61,8 @@ const HeaderNav = () => {
           <StLink to="profile">Profile</StLink>
         </StDiv>
         <StDiv>
-          <StImg src={image}></StImg>
-          <span>{nickname}님</span>
+          <StImg src={userInfo?.avatar}></StImg>
+          <span>{userInfo?.nickname}님</span>
           <StButton onClick={logoutHandler}>로그아웃</StButton>
         </StDiv>
       </StHeader>

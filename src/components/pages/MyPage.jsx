@@ -11,38 +11,10 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
 const MyPage = () => {
-  const [nickname, setNickname] = useState("");
+  const { userInfo } = useContext(AuthContext);
   const [newNickname, setNewNickname] = useState("");
-  const [image, setImage] = useState(null);
   const [newImage, setNewImage] = useState(null); // 기본값을 null로 설정
-  const [userInfo, setUserInfo] = useState(null);
-  const { isAuthenticated } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    else {
-      const fetchUserInfo = async () => {
-        try {
-          const token = localStorage.getItem("accessToken");
-          const { data } = await axios.get(
-            "https://moneyfulpublicpolicy.co.kr/user",
-            {
-              headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setNickname(data.nickname);
-          setNewNickname(data.nickname);
-          setImage(data.avatar ?? "../../images/profile.jpg");
-        } catch (error) {
-          alert(`사용자 정보 불러오기 실패: ${error.message}`);
-        }
-      };
-      fetchUserInfo();
-    }
-  }, [isAuthenticated]);
+  const [newUserInfo, setNewUserInfo] = useState(null);
 
   const changeProfile = async (e) => {
     e.preventDefault();
@@ -64,13 +36,13 @@ const MyPage = () => {
       );
 
       if (data.success) {
-        setUserInfo((prev) => ({
+        setNewUserInfo((prev) => ({
           ...prev,
           nickname: data.nickname,
         }));
         alert("프로필이 변경되었습니다.");
-        setNickname(data.nickname);
-        setImage(data.avatar);
+        setNewNickname(data.nickname);
+        setNewImage(data.avatar);
       } else {
         alert("프로필 변경에 실패했습니다.");
       }
@@ -86,7 +58,7 @@ const MyPage = () => {
 
   return (
     <StSection>
-      <StH3>{nickname}님의 프로필</StH3>
+      <StH3>{userInfo?.nickname}님의 프로필</StH3>
       <StFormBox onSubmit={changeProfile}>
         <label>
           닉네임{" "}
