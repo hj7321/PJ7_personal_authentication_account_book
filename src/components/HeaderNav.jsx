@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 const StHeader = styled.header`
   display: flex;
@@ -31,10 +32,48 @@ const StButton = styled.button`
   }
 `;
 
+const StImg = styled.img`
+  border-radius: 50%;
+  width: 50px;
+`;
+
+const StLink = styled(Link)`
+  font-size: 18px;
+  &:hover {
+    font-weight: bold;
+  }
+`;
+
 const HeaderNav = () => {
   const navigate = useNavigate();
+  const [nickname, setNickname] = useState("");
+  const [image, setImage] = useState("");
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
-  const { logout } = useContext(AuthContext);
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    else {
+      const fetchUserInfo = async () => {
+        try {
+          const token = localStorage.getItem("accessToken");
+          const { data } = await axios.get(
+            "https://moneyfulpublicpolicy.co.kr/user",
+            {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setNickname(data.nickname);
+          setImage(data.avatar ?? "../images/profile.jpg");
+        } catch (error) {
+          alert(`사용자 정보 불러오기 실패: ${error.message}`);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [isAuthenticated]);
 
   const logoutHandler = () => {
     logout();
@@ -45,12 +84,12 @@ const HeaderNav = () => {
     <>
       <StHeader>
         <StDiv $moreGap>
-          <Link to="/">Home</Link>
-          <Link to="profile">Profile</Link>
+          <StLink to="/">Home</StLink>
+          <StLink to="profile">Profile</StLink>
         </StDiv>
         <StDiv>
-          <span>프로필 사진</span>
-          <span>닉네임</span>
+          <StImg src={image}></StImg>
+          <span>{nickname}님</span>
           <StButton onClick={logoutHandler}>로그아웃</StButton>
         </StDiv>
       </StHeader>
