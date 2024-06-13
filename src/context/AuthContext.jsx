@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import axios from "axios";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext(null);
 
@@ -6,6 +7,7 @@ const token = localStorage.getItem("accessToken");
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!token);
+  const [userInfo, setUserInfo] = useState(null);
 
   const login = (token) => {
     localStorage.setItem("accessToken", token);
@@ -17,8 +19,31 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const { data } = await axios.get(
+          "https://moneyfulpublicpolicy.co.kr/user",
+          {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUserInfo(data);
+      } catch (error) {
+        alert(`사용자 정보 불러오기 실패: ${error.message}`);
+      }
+    };
+    fetchUserInfo();
+  }, [isAuthenticated]);
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, userInfo }}>
       {children}
     </AuthContext.Provider>
   );
