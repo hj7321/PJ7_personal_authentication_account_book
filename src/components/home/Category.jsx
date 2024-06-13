@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { StSection } from "../style/CalendarStyle";
 import { StDiv, StP } from "../style/CategoryStyle";
 import { useSelector } from "react-redux";
@@ -57,17 +57,15 @@ const Category = () => {
           "지출이 없습니다."
         )}
         {filteredExpense.map((obj) => (
-          <Link key={obj.id} onClick={() => checkUser(obj.createdBy, obj.id)}>
-            <li>
-              <div>
-                <p>{obj.date}</p>
-                <StP>
-                  [{obj.item}] {obj.description} (by {obj.createdBy})
-                </StP>
-              </div>
-              <StDiv>{obj.amount.toLocaleString()}원</StDiv>
-            </li>
-          </Link>
+          <li key={obj.id} onClick={() => checkUser(obj.createdBy, obj.id)}>
+            <div>
+              <p>{obj.date}</p>
+              <StP>
+                [{obj.item}] {obj.description} (by {obj.createdBy})
+              </StP>
+            </div>
+            <StDiv>{obj.amount.toLocaleString()}원</StDiv>
+          </li>
         ))}
       </ul>
     </StSection>
