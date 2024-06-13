@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   StSection,
   StH3,
-  StLoginBox,
+  StFormBox,
   StIdPw,
   StLabel,
   StInput,
@@ -58,7 +58,7 @@ const SignUp = () => {
   return (
     <StSection>
       <StH3>회원가입</StH3>
-      <StLoginBox onSubmit={onSubmitHandler}>
+      <StFormBox onSubmit={onSubmitHandler}>
         <StIdPw>
           <label>
             아이디{" "}
@@ -96,7 +96,7 @@ const SignUp = () => {
         <StButton type="submit" $margin>
           회원가입
         </StButton>
-      </StLoginBox>
+      </StFormBox>
       <StButton
         onClick={() => {
           navigate("/login");
