@@ -23,7 +23,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
 
     const fetchUserInfo = async () => {
       try {
