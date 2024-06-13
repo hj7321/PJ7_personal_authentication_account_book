@@ -33,7 +33,6 @@ const Login = () => {
         "https://moneyfulpublicpolicy.co.kr/login",
         loginObj
       );
-      console.log(data);
       if (data.success) {
         alert(`${data.nickname}님, 환영합니다!`);
         login(data.accessToken);
