@@ -34,7 +34,7 @@ export const StIdPw = styled.div`
   align-items: center;
 `;
 
-export const StLoginBox = styled.form`
+export const StFormBox = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -43,7 +43,8 @@ export const StLoginBox = styled.form`
 `;
 
 export const StLabel = styled.label`
-  margin-right: 16px;
+  margin-right: ${(props) => (props.$img ? 0 : 16)}px;
+  margin-left: ${(props) => (props.$img ? 8 : 0)}px;
 `;
 
 export const StInput = styled.input`

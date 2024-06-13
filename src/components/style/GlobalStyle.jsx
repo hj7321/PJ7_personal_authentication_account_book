@@ -6,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     max-width: 900px;
     min-width: 600px;
-    margin: 80px auto 30px;
+    margin: 90px auto 30px;
     background-color: pink;
     display: grid;
   }
