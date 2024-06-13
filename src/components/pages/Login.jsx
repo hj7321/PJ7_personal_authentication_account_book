@@ -3,7 +3,7 @@ import {
   StSection,
   StH3,
   StIdPw,
-  StLoginBox,
+  StFormBox,
   StLabel,
   StInput,
   StButton,
@@ -38,8 +38,7 @@ const Login = () => {
         alert(`${data.nickname}님, 환영합니다!`);
         login(data.accessToken);
         navigate("/");
-      } else alert("로그인 실패"); // 에러 나면 무조건 catch문으로 가니까 이거 필요 없나?
-
+      } else alert("로그인 실패");
       e.target.reset();
     } catch (error) {
       alert(`로그인 실패: ${error.message}`);
@@ -49,7 +48,7 @@ const Login = () => {
   return (
     <StSection>
       <StH3>로그인</StH3>
-      <StLoginBox onSubmit={onSubmitHandler}>
+      <StFormBox onSubmit={onSubmitHandler}>
         <StIdPw>
           <label>
             아이디 <StInput type="text" name="id" />
@@ -61,7 +60,7 @@ const Login = () => {
         <StButton type="submit" $margin>
           로그인
         </StButton>
-      </StLoginBox>
+      </StFormBox>
       <StButton
         onClick={() => {
           navigate("/signup");
