@@ -1,16 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { StSection } from "../style/CalendarStyle";
 import { StDiv, StP } from "../style/CategoryStyle";
-import { useSelector } from "react-redux";
 import SortedOption from "./SortedOption";
 import { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getExpenses } from "../../api/Expense";
 import { AuthContext } from "./../../context/AuthContext";
 
-const Category = () => {
-  const { month } = useSelector((state) => state.month);
-
+const Category = ({ month }) => {
   const navigate = useNavigate();
 
   const { userInfo } = useContext(AuthContext);
@@ -29,8 +26,8 @@ const Category = () => {
     return expenses?.filter((obj) => obj.month === month) || [];
   };
 
-  const checkUser = (createdBy, id) => {
-    if (createdBy !== userInfo.nickname)
+  const checkUser = (userId, id) => {
+    if (userId !== userInfo.id)
       return alert("본인이 작성한 목록만 수정 및 삭제가 가능합니다.");
     navigate(`/detail/${id}`);
   };
@@ -57,7 +54,7 @@ const Category = () => {
           "지출이 없습니다."
         )}
         {filteredExpense.map((obj) => (
-          <li key={obj.id} onClick={() => checkUser(obj.createdBy, obj.id)}>
+          <li key={obj.id} onClick={() => checkUser(obj.userId, obj.id)}>
             <div>
               <p>{obj.date}</p>
               <StP>
