@@ -8,13 +8,12 @@ import {
   StLabel,
 } from "../style/LoginStyle";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
+import axiosInstance from "../../shared/axiosInstance";
 
 const MyPage = () => {
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, setUserInfo } = useContext(AuthContext);
   const [newNickname, setNewNickname] = useState("");
   const [newImage, setNewImage] = useState(null); // 기본값을 null로 설정
-  const [newUserInfo, setNewUserInfo] = useState(null);
 
   const changeProfile = async (e) => {
     e.preventDefault();
@@ -23,26 +22,22 @@ const MyPage = () => {
       const formData = new FormData();
       formData.append("nickname", newNickname);
       if (newImage) formData.append("avatar", newImage);
+      else formData.append("avatar", userInfo.avatar);
 
-      const { data } = await axios.patch(
-        "https://moneyfulpublicpolicy.co.kr/profile",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const { data } = await axiosInstance.patch("/profile", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (data.success) {
-        setNewUserInfo((prev) => ({
+        setUserInfo((prev) => ({
           ...prev,
           nickname: data.nickname,
+          avatar: data.avatar,
         }));
         alert("프로필이 변경되었습니다.");
-        setNewNickname(data.nickname);
-        setNewImage(data.avatar);
       } else {
         alert("프로필 변경에 실패했습니다.");
       }
@@ -55,6 +50,10 @@ const MyPage = () => {
     const file = e.target.files[0];
     if (file) setNewImage(file);
   };
+
+  useEffect(() => {
+    if (userInfo) setNewNickname(userInfo.nickname);
+  }, [userInfo]);
 
   return (
     <StSection>
