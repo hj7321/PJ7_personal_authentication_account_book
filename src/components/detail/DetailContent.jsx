@@ -52,6 +52,7 @@ const DetailContent = () => {
         item: item.current.value,
         amount: +amount.current.value,
         description: description.current.value,
+        month: +date.current.value.split("-")[1],
       });
       alert("내역이 수정되었습니다.");
       navigate("/");
