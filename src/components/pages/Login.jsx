@@ -8,9 +8,9 @@ import {
   StInput,
   StButton,
 } from "../style/LoginStyle";
-import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import axiosInstance from "../../shared/axiosInstance";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,10 +29,7 @@ const Login = () => {
 
     try {
       const loginObj = { id, password };
-      const { data } = await axios.post(
-        "https://moneyfulpublicpolicy.co.kr/login",
-        loginObj
-      );
+      const { data } = await axiosInstance.post("/login", loginObj);
       if (data.success) {
         alert(`${data.nickname}님, 환영합니다!`);
         login(data.accessToken);

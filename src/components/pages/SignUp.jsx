@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { StMessage } from "../style/SignUpStyle";
 import useValidate from "../hooks/useValidate";
-import axios from "axios";
+import axiosInstance from "../../shared/axiosInstance";
 
 const SignUp = () => {
   const [inputId, setInputId] = useState("");
@@ -35,10 +35,7 @@ const SignUp = () => {
       if (!idMsg && !pwMsg && !nameMsg) {
         const newUser = { id: inputId, password: inputPw, nickname: inputName };
 
-        const { data } = await axios.post(
-          "https://moneyfulpublicpolicy.co.kr/register",
-          newUser
-        );
+        const { data } = await axiosInstance.post("/register", newUser);
 
         if (data.success) {
           alert("회원가입을 축하드립니다.");
