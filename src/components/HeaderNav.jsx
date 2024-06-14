@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
 
 const StHeader = styled.header`
   display: flex;
@@ -34,7 +33,8 @@ const StButton = styled.button`
 
 const StImg = styled.img`
   border-radius: 50%;
-  width: 50px;
+  width: 60px;
+  height: 60px;
 `;
 
 const StLink = styled(Link)`
