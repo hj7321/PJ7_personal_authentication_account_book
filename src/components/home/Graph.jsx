@@ -8,12 +8,9 @@ import {
   SummaryContainer,
   SummaryItem,
 } from "../style/GraphStyle";
-import { useSelector } from "react-redux";
 import { getExpenses } from "../../api/Expense";
 
-const Graph = () => {
-  const { month } = useSelector((state) => state.month);
-
+const Graph = ({ month }) => {
   const {
     isPending,
     isFetching,
