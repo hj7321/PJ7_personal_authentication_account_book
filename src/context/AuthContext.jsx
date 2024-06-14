@@ -1,6 +1,6 @@
-import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../shared/axiosInstance";
 
 export const AuthContext = createContext(null);
 
@@ -31,18 +31,14 @@ export const AuthProvider = ({ children }) => {
     const fetchUserInfo = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const { data } = await axios.get(
-          "https://moneyfulpublicpolicy.co.kr/user",
-          {
-            headers: {
-              "Content-type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const { data } = await axiosInstance.get("/user", {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUserInfo(data);
       } catch (error) {
-        alert(`사용자 정보 불러오기 실패: ${error.message}`);
         navigate("/login");
       }
     };
@@ -50,7 +46,9 @@ export const AuthProvider = ({ children }) => {
   }, [isAuthenticated]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, userInfo }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, login, logout, userInfo, setUserInfo }}
+    >
       {children}
     </AuthContext.Provider>
   );
