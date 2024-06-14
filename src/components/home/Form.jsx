@@ -26,11 +26,20 @@ const Form = () => {
     const item = data.get("item");
     const amount = +data.get("amount");
     const description = data.get("description");
-    const createdBy = userInfo.nickname;
     const month = +date.split("-")[1];
+    const createdBy = userInfo.nickname;
+    const userId = userInfo.id;
 
     if (validateInput(date, item, amount, description)) {
-      addMutation.mutate({ date, item, amount, description, createdBy, month });
+      addMutation.mutate({
+        month,
+        date,
+        item,
+        amount,
+        description,
+        createdBy,
+        userId,
+      });
 
       e.target.reset();
     }
